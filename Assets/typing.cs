@@ -8,16 +8,17 @@ public class typing : MonoBehaviour
     // Start is called before the first frame update
     
     private string[] qJ = { "問題", "テスト", "タイピング", "かめくめちゃん" };
-    //　問題のローマ字文
+    private string[] qH = { "もんだい", "てすと", "たいぴんぐ", "かめくめちゃん" };
     private string[] qR = { "monndai", "tesuto", "taipinngu", "kamekumechann" };
-    //　日本語表示テキスト
+    //　表示テキスト
     private Text UIJ;
-    //　ローマ字表示テキスト
     private Text UIR;
-    //　日本語問題
+    private Text UIH;
+
+    //　問題
     private string nQJ;
-    //　ローマ字問題
     private string nQR;
+
     //　問題番号
     private int numberOfQuestion;
     //　入力した文字列テキスト
@@ -43,6 +44,8 @@ public class typing : MonoBehaviour
         UIJ = transform.Find("InputPanel/QuestionJ").GetComponent<Text>();
         UIR = transform.Find("InputPanel/QuestionR").GetComponent<Text>();
         UII = transform.Find("InputPanel/Input").GetComponent<Text>();
+        UIH = transform.Find("InputPanel/Hiragana").GetComponent<Text>();
+        
         UIcorrectA = transform.Find("DataPanel/Correct Answer").GetComponent<Text>();
         UImistake = transform.Find("DataPanel/Mistake").GetComponent<Text>();
         UIcorrectAR = transform.Find("DataPanel/Correct Answer Rate").GetComponent<Text>();
@@ -103,6 +106,7 @@ public class typing : MonoBehaviour
         nQR = qR[numberOfQuestion];
         UIJ.text = nQJ;
         UIR.text = nQR;
+        UIH.text = qH[numberOfQuestion];
     }
     //　タイピング正解時の処理
     void Correct()
