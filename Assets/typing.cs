@@ -6,18 +6,23 @@ using UnityEngine.UI;
 public class typing : MonoBehaviour
 {
     // Start is called before the first frame update
-    
-    private string[] qJ = { "問題", "テスト", "タイピング", "かめくめちゃん" };
+
+    //private string[] qJ = { "問題", "テスト", "タイピング", "かめくめちゃん" };
     private string[] qH = { "もんだい", "てすと", "たいぴんぐ", "かめくめちゃん" };
-    private string[] qR = { "monndai", "tesuto", "taipinngu", "kamekumechann" };
+    //private string[] qR = { "monndai", "tesuto", "taipinngu", "kamekumechann" };
+    //public typingdata qJ, qH, qR;
+    public typingdata qJ = new typingdata();
+    public typingdata qR = new typingdata();
     //　表示テキスト
     private Text UIJ;
     private Text UIR;
     private Text UIH;
 
+    //問題サイズ
+    private int Qsize = 4;
+
     //　問題
-    private string nQJ;
-    private string nQR;
+    string nQJ, nQR, nQH;
 
     //　問題番号
     private int numberOfQuestion;
@@ -99,14 +104,22 @@ public class typing : MonoBehaviour
         //　文字の位置を0番目に戻す
         indexOfString = 0;
         //　問題数内でランダムに選ぶ
-        numberOfQuestion = Random.Range(0, qJ.Length);
+        numberOfQuestion = Random.Range(0, Qsize);
 
         //　選択した問題をテキストUIにセット
-        nQJ = qJ[numberOfQuestion];
-        nQR = qR[numberOfQuestion];
+        nQJ = qJ.GetJ(numberOfQuestion);
+        nQR = qR.GetR(numberOfQuestion);
+        //nQH = qH.GetH(numberOfQuestion);
+        //UIJ.text = qJ.GetH(numberOfQuestion);
+        //UIR.text = qR.GetH(numberOfQuestion);
+        //UIH.text = qH.GetH(numberOfQuestion);
+
+        //nQJ = qJ[numberOfQuestion];
+        //nQR = qR[numberOfQuestion];
         UIJ.text = nQJ;
         UIR.text = nQR;
         UIH.text = qH[numberOfQuestion];
+       
     }
     //　タイピング正解時の処理
     void Correct()
