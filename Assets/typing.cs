@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class typing : MonoBehaviour
-{
-    // Start is called before the first frame update
-
-    //private string[] qJ = { "問題", "テスト", "タイピング", "かめくめちゃん" };
-    private string[] qH = { "もんだい", "てすと", "たいぴんぐ", "かめくめちゃん" };
-    //private string[] qR = { "monndai", "tesuto", "taipinngu", "kamekumechann" };
-    //public typingdata qJ, qH, qR;
+{ 
     public typingdata qJ = new typingdata();
     public typingdata qR = new typingdata();
+    public typingdata qH = new typingdata();
     //　表示テキスト
     private Text UIJ;
     private Text UIR;
     private Text UIH;
+    //　入力した文字列テキスト
+    private Text UII;
+
+    //　正解した文字列を入れておく
+    private string correctString;
 
     //問題サイズ
     private int Qsize = 4;
@@ -26,22 +26,16 @@ public class typing : MonoBehaviour
 
     //　問題番号
     private int numberOfQuestion;
-    //　入力した文字列テキスト
-    private Text UII;
-    //　正解数
-    private int correctN;
-    //　正解数表示用テキストUI
-    private Text UIcorrectA;
-    //　正解した文字列を入れておく
-    private string correctString;
-    //　失敗数
-    private int mistakeN;
-    //　失敗数表示用テキストUI
-    private Text UImistake;
     //　正解率
     private float correctAR;
-    //　正解率表示用テキストUI
-    private Text UIcorrectAR;
+
+    //　正解数と失敗数
+    private int correctN, mistakeN;
+    //　正解数表示用とかテキストUI
+    private Text UIcorrectA, UImistake, UIcorrectAR;
+
+
+    
 
     void Start()
     {
@@ -109,16 +103,10 @@ public class typing : MonoBehaviour
         //　選択した問題をテキストUIにセット
         nQJ = qJ.GetJ(numberOfQuestion);
         nQR = qR.GetR(numberOfQuestion);
-        //nQH = qH.GetH(numberOfQuestion);
-        //UIJ.text = qJ.GetH(numberOfQuestion);
-        //UIR.text = qR.GetH(numberOfQuestion);
-        //UIH.text = qH.GetH(numberOfQuestion);
-
-        //nQJ = qJ[numberOfQuestion];
-        //nQR = qR[numberOfQuestion];
+        nQH = qH.GetH(numberOfQuestion);
         UIJ.text = nQJ;
         UIR.text = nQR;
-        UIH.text = qH[numberOfQuestion];
+        UIH.text = nQH;
        
     }
     //　タイピング正解時の処理

@@ -8,6 +8,11 @@ public class typingdata {
     private string[] qH = { "もんだい", "てすと", "たいぴんぐ", "かめくめちゃん" };
     private string[] qR = { "monndai", "tesuto", "taipinngu", "kamekumechann" };
 
+    private List<(string J, string H)> JH = new List<(string J, string H)>()
+    {
+        ("問題","もんだい"), ("テスト","てすと"), ("タイピング","たいぴんぐ")
+    };
+
     //取得用関数
     //配列の何番目かを引数に取る
     public string GetJ(int num)
