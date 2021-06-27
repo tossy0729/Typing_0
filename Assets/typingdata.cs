@@ -13,6 +13,8 @@ public class typingdata {
         ("問題","もんだい"), ("テスト","てすと"), ("タイピング","たいぴんぐ")
     };
 
+    public makeR R = new makeR();
+
     //取得用関数
     //配列の何番目かを引数に取る
     public string GetJ(int num)
@@ -21,10 +23,11 @@ public class typingdata {
     }
     public string GetH(int num)
     {
-        return this.qH[num];
+        return this.JH[num].J;
     }
-    public string GetR(int num)
+    public List<List<string>> GetR(int num)
     {
-        return this.qR[num];
+        List<List<string>> Romaji = R.Convert(JH[num].H);
+        return Romaji;
     }
 }

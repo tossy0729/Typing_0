@@ -22,7 +22,9 @@ public class typing : MonoBehaviour
     private int Qsize = 4;
 
     //　問題
-    string nQJ, nQR, nQH;
+    string nQJ, nQH;
+    //ローマ字の入力パターン
+    List<List<string>> Rpattern;
 
     //　問題番号
     private int numberOfQuestion;
@@ -102,7 +104,7 @@ public class typing : MonoBehaviour
 
         //　選択した問題をテキストUIにセット
         nQJ = qJ.GetJ(numberOfQuestion);
-        nQR = qR.GetR(numberOfQuestion);
+        Rpattern = qR.GetR(numberOfQuestion);
         nQH = qH.GetH(numberOfQuestion);
         UIJ.text = nQJ;
         UIR.text = nQR;

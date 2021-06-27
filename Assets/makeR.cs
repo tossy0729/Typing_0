@@ -1,35 +1,138 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Diagnostics;
+using System.Linq;
 
 public class makeR 
 {
     //白狐さんのブログを参照
     //https://qiita.com/Arthur_Lugh/items/43b61877819e402c50d6
 
-    // ひらがな文を受け取り、入力パターンを出力する
-    public List<string> convert(string s)
+    public List<List<string>> Convert(string s)
     {
-        var pattern = new List<string>(); // ローマ字の入力パターン
+        var pattern = new List<List<string>>();
+        var tmp = new List<string>();
+        //パース
+        tmp = ParseHiraganaSentence(s);
+        //パターン生成
+        pattern = MakeTypeSentence(tmp);
 
-        string one, two;
-        for(int i=0; i<s.Length;i++)
+        return pattern;
+    }
+
+    //ひらがな文を受け取り、パースする
+    List<string> ParseHiraganaSentence(string str)
+    {
+        var ret = new List<string>();
+        int i = 0;
+        string uni, bi;
+        while (i < str.Length)
         {
-            one = s[i].ToString();
-            if(i+1 < s.Length){ two = s[i].ToString() + s[i + 1].ToString();}
-            else { two = ""; }
-
-            if (HR.ContainsKey(two))
+            uni = str[i].ToString();
+            if (i + 1 < str.Length)
+            {
+                bi = str[i].ToString() + str[i + 1].ToString();
+            }
+            else
+            {
+                bi = "";
+            }
+            if (HR.ContainsKey(bi))
             {
                 i += 2;
-                pattern.Add(two);
+                ret.Add(bi);
             }
             else
             {
                 i++;
-                pattern.Add(one);
+                ret.Add(uni);
             }
         }
+        return ret;
+    }
+
+    // パースされたものを受け取り、入力パターンを出力する
+    public List<List<string>> MakeTypeSentence(List<string> s)
+    {
+        var pattern = new List<List<string>>(); // ローマ字の入力パターン
+
+        string one, two; //今見ている文字と、次の文字を入れるstring
+        for (int i = 0; i < s.Count; i++)
+        {
+            one = s[i].ToString();
+            //次の文字があれば入れる
+            if (i + 1 < s.Count) { two = s[i].ToString() + s[i + 1].ToString(); }
+            else { two = ""; }
+
+            var tmpList = new List<string>();
+
+            //「ん」の処理
+            if (one.Equals("ん"))
+            {
+                bool isOKsingle;
+                var nList = HR[one];
+                //文末の「ん」-> nn, xnのみ
+                if (s.Count == i + 1) { isOKsingle = false; }
+                //次の文字が母音、な行、や行 -> nn, xnのみ
+                else if (i + 1 < s.Count && (
+                    two.Equals("あ") || two.Equals("い") || two.Equals("う") || two.Equals("え") || two.Equals("お") ||
+                    two.Equals("な") || two.Equals("に") || two.Equals("ぬ") || two.Equals("ね") || two.Equals("の") ||
+                    two.Equals("や") || two.Equals("ゆ") || two.Equals("よ")
+                    ))
+                { isOKsingle = false; }
+                //それ以外の場合は「ん」は n のみでも良い
+                else { isOKsingle = true; }
+                foreach (var t in nList)
+                {
+                    // "n"一文字がだめな時追加しない
+                    if (!isOKsingle && t.Equals("n")) { continue; }
+                    tmpList.Add(t);
+                }
+
+            }
+            // 「っ」の処理
+            else if (one.Equals("っ"))
+            {
+                var ltuList = HR[one];
+                var nextList = HR[two];
+                var hs = new HashSet<string>();
+                // 次の文字の子音だけとってくる
+                foreach (string t in nextList)
+                {
+                    string c = t[0].ToString();
+                    hs.Add(c);
+                }
+                var hsList = hs.ToList();
+                List<string> ltuTypeList = hsList.Concat(ltuList).ToList();
+                tmpList = ltuTypeList;
+            }
+
+            //「ちゃ」などの場合に「ち」+「ゃ」などを許容する
+            else if (one.Length == 2 && !string.Equals("ん", one[0]))
+            {
+                //ちゃなどをそのまま打つパターン
+                tmpList = tmpList.Concat(HR[one]).ToList();
+                // ち + ゃ などの分解して入力するパターンを生成
+                var fstList = HR[one[0].ToString()];
+                var sndList = HR[one[1].ToString()];
+                var retList = new List<string>();
+                foreach (string fstStr in fstList)
+                {
+                    foreach (string sndStr in sndList)
+                    {
+                        string t = fstStr + sndStr;
+                        retList.Add(t);
+                    }
+                }
+                tmpList = tmpList.Concat(retList).ToList();
+            }
+
+            //それ以外
+            else { tmpList = HR[one].ToList(); }
+        }
+
         return pattern;
     }
     //入力パターンのdictionary
