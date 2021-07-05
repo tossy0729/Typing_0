@@ -23,7 +23,7 @@ public class makeR
     }
 
     //ひらがな文を受け取り、パースする
-    List<string> ParseHiraganaSentence(string str)
+    public List<string> ParseHiraganaSentence(string str)
     {
         var ret = new List<string>();
         int i = 0;
@@ -131,6 +131,7 @@ public class makeR
 
             //それ以外
             else { tmpList = HR[one].ToList(); }
+            pattern.Add(tmpList);
         }
 
         return pattern;
@@ -323,14 +324,12 @@ public class makeR
         {"りぇ", new string[1] {"rye"}},
         {"りょ", new string[1] {"ryo"}},
         {"ヴぁ", new string[1] {"va"}},
-        {"ヴぃ", new string[1] {"vi"}},
+        {"ヴぃ", new string[2] {"vi","vyi"}},
         {"ヴ", new string[1] {"vu"}},
-        {"ヴぇ", new string[1] {"ve"}},
+        {"ヴぇ", new string[2] {"ve","vye"}},
         {"ヴぉ", new string[1] {"vo"}},
         {"ヴゃ", new string[1] {"vya"}},
-        {"ヴぃ", new string[1] {"vyi"}},
         {"ヴゅ", new string[1] {"vyu"}},
-        {"ヴぇ", new string[1] {"vye"}},
         {"ヴょ", new string[1] {"vyo"}},
 
         //小文字

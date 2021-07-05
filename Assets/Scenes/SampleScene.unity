@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 32779908}
   - component: {fileID: 32779910}
   - component: {fileID: 32779909}
-  - component: {fileID: 32779911}
   - component: {fileID: 32779912}
   m_Layer: 5
   m_Name: QuestionJ
@@ -204,33 +203,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32779907}
   m_CullTransparentMesh: 1
---- !u!114 &32779911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 32779907}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831d9504fe3864f459700514a5971e69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qJ:
-  - "\u554F\u984C"
-  - "\u30C6\u30B9\u30C8"
-  - "\u30BF\u30A4\u30D4\u30F3\u30B0"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qH:
-  - "\u3082\u3093\u3060\u3044"
-  - "\u3066\u3059\u3068"
-  - "\u305F\u3044\u3074\u3093\u3050"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qR:
-  - monndai
-  - tesuto
-  - taipinngu
-  - kamekumechann
 --- !u!114 &32779912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +320,6 @@ GameObject:
   - component: {fileID: 259566277}
   - component: {fileID: 259566276}
   - component: {fileID: 259566280}
-  - component: {fileID: 259566281}
   m_Layer: 5
   m_Name: TypingSoft
   m_TagString: Untagged
@@ -450,33 +421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d122c83b94642f4ebd97523aeccc8c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &259566281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259566275}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831d9504fe3864f459700514a5971e69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qJ:
-  - "\u554F\u984C"
-  - "\u30C6\u30B9\u30C8"
-  - "\u30BF\u30A4\u30D4\u30F3\u30B0"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qH:
-  - "\u3082\u3093\u3060\u3044"
-  - "\u3066\u3059\u3068"
-  - "\u305F\u3044\u3074\u3093\u3050"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qR:
-  - monndai
-  - tesuto
-  - taipinngu
-  - kamekumechann
 --- !u!1 &262037467
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,7 +589,6 @@ GameObject:
   - component: {fileID: 598069177}
   - component: {fileID: 598069179}
   - component: {fileID: 598069178}
-  - component: {fileID: 598069180}
   - component: {fileID: 598069181}
   m_Layer: 5
   m_Name: QuestionR
@@ -715,33 +658,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598069176}
   m_CullTransparentMesh: 1
---- !u!114 &598069180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 598069176}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831d9504fe3864f459700514a5971e69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qJ:
-  - "\u554F\u984C"
-  - "\u30C6\u30B9\u30C8"
-  - "\u30BF\u30A4\u30D4\u30F3\u30B0"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qH:
-  - "\u3082\u3093\u3060\u3044"
-  - "\u3066\u3059\u3068"
-  - "\u305F\u3044\u3074\u3093\u3050"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qR:
-  - monndai
-  - tesuto
-  - taipinngu
-  - kamekumechann
 --- !u!114 &598069181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,7 +924,6 @@ GameObject:
   - component: {fileID: 1398088914}
   - component: {fileID: 1398088913}
   - component: {fileID: 1398088912}
-  - component: {fileID: 1398088915}
   m_Layer: 5
   m_Name: Hiragana
   m_TagString: Untagged
@@ -1089,33 +1004,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398088910}
   m_CullTransparentMesh: 1
---- !u!114 &1398088915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398088910}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831d9504fe3864f459700514a5971e69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qJ:
-  - "\u554F\u984C"
-  - "\u30C6\u30B9\u30C8"
-  - "\u30BF\u30A4\u30D4\u30F3\u30B0"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qH:
-  - "\u3082\u3093\u3060\u3044"
-  - "\u3066\u3059\u3068"
-  - "\u305F\u3044\u3074\u3093\u3050"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qR:
-  - monndai
-  - tesuto
-  - taipinngu
-  - kamekumechann
 --- !u!1 &1486725106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1107,6 @@ GameObject:
   - component: {fileID: 1606729721}
   - component: {fileID: 1606729723}
   - component: {fileID: 1606729722}
-  - component: {fileID: 1606729724}
   - component: {fileID: 1606729725}
   m_Layer: 5
   m_Name: Input
@@ -1289,33 +1176,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606729720}
   m_CullTransparentMesh: 1
---- !u!114 &1606729724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1606729720}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831d9504fe3864f459700514a5971e69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qJ:
-  - "\u554F\u984C"
-  - "\u30C6\u30B9\u30C8"
-  - "\u30BF\u30A4\u30D4\u30F3\u30B0"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qH:
-  - "\u3082\u3093\u3060\u3044"
-  - "\u3066\u3059\u3068"
-  - "\u305F\u3044\u3074\u3093\u3050"
-  - "\u304B\u3081\u304F\u3081\u3061\u3083\u3093"
-  qR:
-  - monndai
-  - tesuto
-  - taipinngu
-  - kamekumechann
 --- !u!114 &1606729725
 MonoBehaviour:
   m_ObjectHideFlags: 0

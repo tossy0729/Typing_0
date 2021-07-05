@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class typing : MonoBehaviour
 { 
-    public typingdata qJ = new typingdata();
-    public typingdata qR = new typingdata();
-    public typingdata qH = new typingdata();
+    public typingdata td = new typingdata();
+    //public typingdata qR = new typingdata();
+    //public typingdata qH = new typingdata();
     //　表示テキスト
     private Text UIJ;
     private Text UIR;
@@ -65,35 +65,35 @@ public class typing : MonoBehaviour
     private int indexOfString;
 
     // Update is called once per frame
-    void Update()
-    {
-        // escが押されたら終了
-        if (Input.GetKey(KeyCode.Escape)) Quit();
+    //void Update()
+    //{
+    //    // escが押されたら終了
+    //    if (Input.GetKey(KeyCode.Escape)) Quit();
 
-        //　今見ている文字とキーボードから打った文字が同じかどうか
-        if (Input.GetKeyDown(nQR[indexOfString].ToString()))
-        {
-            //　正解時の処理を呼び出す
-            Correct();
-            //　問題を入力し終えたら次の問題を表示
-            if (indexOfString >= nQR.Length)
-            {
-                OutputQ();
-            }
-        }
-        else if (Input.anyKeyDown)
-        {
-            //　失敗時の処理を呼び出す
-            Mistake();
-        }
-    }
+    //    //　今見ている文字とキーボードから打った文字が同じかどうか
+    //    if (Input.GetKeyDown(nQR[indexOfString].ToString()))
+    //    {
+    //        //　正解時の処理を呼び出す
+    //        Correct();
+    //        //　問題を入力し終えたら次の問題を表示
+    //        if (indexOfString >= nQR.Length)
+    //        {
+    //            OutputQ();
+    //        }
+    //    }
+    //    else if (Input.anyKeyDown)
+    //    {
+    //        //　失敗時の処理を呼び出す
+    //        Mistake();
+    //    }
+    //}
     //　新しい問題を表示するメソッド
     void OutputQ()
     {
         //　テキストUIを初期化する
         UIJ.text = "";
         UIR.text = "";
-        UII.text = "";
+        UIH.text = "";
 
         //　正解した文字列を初期化
         correctString = "";
@@ -103,28 +103,28 @@ public class typing : MonoBehaviour
         numberOfQuestion = Random.Range(0, Qsize);
 
         //　選択した問題をテキストUIにセット
-        nQJ = qJ.GetJ(numberOfQuestion);
-        Rpattern = qR.GetR(numberOfQuestion);
-        nQH = qH.GetH(numberOfQuestion);
+        nQJ = td.GetJ(numberOfQuestion);
+        Rpattern = td.GetR(numberOfQuestion);
+        nQH = td.GetH(numberOfQuestion);
         UIJ.text = nQJ;
-        UIR.text = nQR;
+        UIR.text = Rpattern[0][0];
         UIH.text = nQH;
        
     }
     //　タイピング正解時の処理
-    void Correct()
-    {
-        //　正解数を増やす
-        correctN++;
-        UIcorrectA.text = correctN.ToString();
-        //　正解率の計算
-        CorrectAnswerRate();
-        //　正解した文字を表示
-        correctString += nQR[indexOfString].ToString();
-        UII.text = correctString;
-        //　次の文字を指す
-        indexOfString++;
-    }
+    //void Correct()
+    //{
+    //    //　正解数を増やす
+    //    correctN++;
+    //    UIcorrectA.text = correctN.ToString();
+    //    //　正解率の計算
+    //    CorrectAnswerRate();
+    //    //　正解した文字を表示
+    //    correctString += nQR[indexOfString].ToString();
+    //    UII.text = correctString;
+    //    //　次の文字を指す
+    //    indexOfString++;
+    //}
 
     //　タイピング失敗時の処理
     void Mistake()
