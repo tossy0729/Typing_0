@@ -2,19 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class typing : MonoBehaviour
 { 
     //タイピングデータクラスのインスタンス
     public typingdata td = new typingdata();
-    //public typingdata qR = new typingdata();
-    //public typingdata qH = new typingdata();
     //　表示テキスト
     private Text UIJ;
     private Text UIR;
     private Text UIH;
     //　入力した文字列テキスト
-    private Text UII;
+    //private Text UII;
+    //入力された文字のqueue
+    private static Queue<char> Inqueue = new Queue<char>();
+    //入力された時刻を入れるqueue
+    private static Queue<double> Timequeue = new Queue<double>();
+
+    //時間
+    private static double JudgeTime;
 
     //　正解した文字列を入れておく
     private string correctString;
@@ -23,7 +29,7 @@ public class typing : MonoBehaviour
     private int Qsize = 4;
 
     //　問題
-    string nQJ, nQH;
+    string nQJ, nQH, nQR;
     //ローマ字の入力パターン
     List<List<string>> Rpattern;
 
@@ -45,7 +51,7 @@ public class typing : MonoBehaviour
         //　テキストUIを取得
         UIJ = transform.Find("InputPanel/QuestionJ").GetComponent<Text>();
         UIR = transform.Find("InputPanel/QuestionR").GetComponent<Text>();
-        UII = transform.Find("InputPanel/Input").GetComponent<Text>();
+        //UII = transform.Find("InputPanel/Input").GetComponent<Text>();
         UIH = transform.Find("InputPanel/Hiragana").GetComponent<Text>();
         
         UIcorrectA = transform.Find("DataPanel/Correct Answer").GetComponent<Text>();
@@ -53,14 +59,19 @@ public class typing : MonoBehaviour
         UIcorrectAR = transform.Find("DataPanel/Correct Answer Rate").GetComponent<Text>();
 
         //　データ初期化処理
+        init();
+
+        OutputQ();
+    }
+    void init()
+    {
         correctN = 0;
         UIcorrectA.text = correctN.ToString();
         mistakeN = 0;
         UImistake.text = mistakeN.ToString();
         correctAR = 0;
         UIcorrectAR.text = correctAR.ToString();
-
-        OutputQ();
+        JudgeTime = -1.0;
     }
 
     private int indexOfString;
@@ -101,18 +112,48 @@ public class typing : MonoBehaviour
         //　文字の位置を0番目に戻す
         indexOfString = 0;
         //　問題数内でランダムに選ぶ
-        numberOfQuestion = Random.Range(0, Qsize);
+        numberOfQuestion = UnityEngine.Random.Range(0, Qsize);
 
         //　選択した問題をテキストUIにセット
         var t = td.Get();
         nQJ = t.Ja;
         Rpattern = t.Ro;
-        nQH = td.GetH(numberOfQuestion);
+        nQR = "";
+        nQH = t.Hi;
+        for(int i = 0; i < Rpattern.Count; i++)
+        {
+            nQR = String.Concat(nQR,Rpattern[i][0]);
+        }
         UIJ.text = nQJ;
-        UIR.text = Rpattern[0][0];
+        UIR.text = nQR;
         UIH.text = nQH;
        
     }
+
+    //タイピングの正誤判定
+    //void IsOk()
+    //{
+    //    //入力のqueueがある限り
+    //    while(Inqueue.Count > 0)
+    //    {
+    //        //Inqueueの先頭の文字を得る
+    //        char inchar = Inqueue.Peek();
+    //        Inqueue.Dequeue();
+    //        double keypressedtime = Timequeue.Peek();
+    //        Timequeue.Dequeue();
+    //        //最後に判定された時間よりも前に押されていたら続ける
+    //        if(keypressedtime <= JudgeTime) { continue; }
+    //        JudgeTime = keypressedtime;
+
+    //        //ミスかどうかを調べる
+    //        bool isMiss = true;
+
+    //        for(int i=0;i< )
+
+    //    }
+    //}
+
+
     //　タイピング正解時の処理
     //void Correct()
     //{
@@ -140,7 +181,7 @@ public class typing : MonoBehaviour
         //　失敗した文字を表示
         if (Input.inputString != "")
         {
-            UII.text = correctString + "<color=#ff0000ff>" + Input.inputString + "</color>";
+            //UII.text = correctString + "<color=#ff0000ff>" + Input.inputString + "</color>";
         }
     }
 

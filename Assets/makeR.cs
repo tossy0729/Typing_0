@@ -19,6 +19,7 @@ public class makeR
         //パターン生成
         pattern = MakeTypeSentence(tmp);
 
+        //「テスト」なら1次元目に"te","su","to"が並ぶ(e.g. pattern[0] ="te"..)
         return pattern;
     }
 
