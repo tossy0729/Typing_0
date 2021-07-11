@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class typing : MonoBehaviour
 { 
+    //タイピングデータクラスのインスタンス
     public typingdata td = new typingdata();
     //public typingdata qR = new typingdata();
     //public typingdata qH = new typingdata();
@@ -103,8 +104,9 @@ public class typing : MonoBehaviour
         numberOfQuestion = Random.Range(0, Qsize);
 
         //　選択した問題をテキストUIにセット
-        nQJ = td.GetJ(numberOfQuestion);
-        Rpattern = td.GetR(numberOfQuestion);
+        var t = td.Get();
+        nQJ = t.Ja;
+        Rpattern = t.Ro;
         nQH = td.GetH(numberOfQuestion);
         UIJ.text = nQJ;
         UIR.text = Rpattern[0][0];
