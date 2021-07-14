@@ -26,9 +26,11 @@ public class typing : MonoBehaviour
 
     //　正解した文字列を入れておく
     private string correctString;
+    // 入力受け付け
+    private static bool isInputValid;
 
     //問題サイズ
-    private int Qsize = 4;
+    //private int Qsize = 4;
 
     //index
     private static int index; // 今見ている部分のindex
@@ -85,11 +87,12 @@ public class typing : MonoBehaviour
         UIcorrectAR.text = correctAR.ToString();
         JudgeTime = -1.0;
         isRecMistype = false;
+        isInputValid = true;
         Inqueue.Clear();
         Timequeue.Clear();
     }
 
-    private int indexOfString;
+    //private int indexOfString;
 
     // Update is called once per frame
     void Update()
@@ -101,7 +104,6 @@ public class typing : MonoBehaviour
         {
             IsOk();
         }
-        Debug.Log("now running");
     }
     //　新しい問題を表示するメソッド
     void OutputQ()
@@ -115,7 +117,7 @@ public class typing : MonoBehaviour
         //　正解した文字列を初期化
         correctString = "";
         //　文字の位置を0番目に戻す
-        indexOfString = 0;
+        //indexOfString = 0;
 
         //　選択した問題をテキストUIにセット
         //問題のインスタンスをゲット
@@ -133,6 +135,8 @@ public class typing : MonoBehaviour
         UIJ.text = nQJ;
         UIR.text = nQR;
         UIH.text = nQH;
+        UII.text = nQR;
+        isInputValid = true;
     }
     //正誤判定の初期化
     void InitSentenceData()
@@ -162,269 +166,285 @@ public class typing : MonoBehaviour
         }
     }
 
-        //タイピングの正誤判定
-        void IsOk()
+    //タイピングの正誤判定
+    void IsOk()
+    {
+        //入力のqueueがある限り
+        while (Inqueue.Count > 0)
         {
-            //入力のqueueがある限り
-            while (Inqueue.Count > 0)
+            //Inqueueの先頭の文字を得る
+            char inchar = Inqueue.Peek();
+            Inqueue.Dequeue();
+            double keypressedtime = Timequeue.Peek();
+            Timequeue.Dequeue();
+            //最後に判定された時間よりも前に押されていたら続ける
+            if (keypressedtime <= JudgeTime) { continue; }
+            JudgeTime = keypressedtime;
+
+            //ミスかどうかを調べる
+            bool isMiss = true;
+
+            for (int i = 0; i < Rpattern[index].Count; i++)
             {
-                //Inqueueの先頭の文字を得る
-                char inchar = Inqueue.Peek();
-                Inqueue.Dequeue();
-                double keypressedtime = Timequeue.Peek();
-                Timequeue.Dequeue();
-                //最後に判定された時間よりも前に押されていたら続ける
-                if (keypressedtime <= JudgeTime) { continue; }
-                JudgeTime = keypressedtime;
-
-                //ミスかどうかを調べる
-                bool isMiss = true;
-
-                for (int i = 0; i < Rpattern[index].Count; i++)
+                //invalidならパス
+                if (sentenceValid[index][i] == 0) continue;
+                int j = sentenceIndex[index][i];
+                char nextinchar = Rpattern[index][i][j];
+                //正解タイプ
+                if (inchar == nextinchar)
                 {
-                    //invalidならパス
-                    if (sentenceValid[index][i] == 0) continue;
-                    int j = sentenceIndex[index][i];
-                    char nextinchar = Rpattern[index][i][j];
-                    //正解タイプ
-                    if (inchar == nextinchar)
-                    {
-                        isMiss = false;
-                        indexAdd[index][i] = 1;
-                    }
-                    else indexAdd[index][i] = 0;
-
+                    isMiss = false;
+                    indexAdd[index][i] = 1;
                 }
-                if (!isMiss) Correct(inchar.ToString());
-                else Mistake();
+                else indexAdd[index][i] = 0;
 
             }
+            if (!isMiss) Correct(inchar.ToString());
+            else Mistake();
+
         }
+    }
 
         //キー入力の受け取り
-        void OnGUI()
-        {
-            Event e = Event.current;
-            if (e.type == EventType.KeyDown && e.type != EventType.KeyUp)
-            {
-                var inputchar = ConvertKeyCodeToChar(e.keyCode);
-                Inqueue.Enqueue(inputchar);
-                Timequeue.Enqueue(Time.realtimeSinceStartup);
-            }
-        }
+        
 
 
 
         //　タイピング正解時の処理
-        void Correct(string s)
+    void Correct(string s)
+    {
+        //　正解数を増やす
+        correctN++;
+        sentenceLength++;
+        UIcorrectA.text = correctN.ToString();
+        //　正解率の計算
+        CorrectAnswerRate();
+        //　次の文字を指す
+        isRecMistype = false;
+        
+        //可能な入力パターンのチェック
+        bool isIndexCountUp = CheckValidSentence(s);
+        UpdateSentence(s);
+        if (isIndexCountUp)
         {
-            //　正解数を増やす
-            correctN++;
-            UIcorrectA.text = correctN.ToString();
-            //　正解率の計算
-            CorrectAnswerRate();
-            //　次の文字を指す
             index++;
-            isRecMistype = false;
-            //可能な入力パターンのチェック
-            bool isIndexCountUp = CheckValidSentence(s);
-            UpdateSentence();
-            if (isIndexCountUp)
-            {
-                index++;
-            }
-            if (index >= Rpattern.Count)
-            {
-                CompleteTask();
-            }
+        }
+        Debug.Log(index);
+        Debug.Log(Rpattern.Count);
+        if (index >= Rpattern.Count)
+        {
+            CompleteTask();
+        }
 
     }
 
         //　タイピング失敗時の処理
-        void Mistake()
-        {
-            //　失敗数を増やす（同時押しにも対応させる）
-            mistakeN++;
+    void Mistake()
+    {
+        //　失敗数を増やす（同時押しにも対応させる）
+        mistakeN++;
 
-            UImistake.text = mistakeN.ToString();
-            //　正解率の計算
-            CorrectAnswerRate();
-            // 打つべき文字を赤く表示
-            if (!isRecMistype)
-            {
-                string s = UII.text.ToString();
-                string rest = s.Substring(1);
-                UII.text = "<color=#ff0000ff>" + s[0].ToString() + "</color>" + rest;
-            }
-            isRecMistype = true;
-        }
-
-        //　正解率の計算処理
-        void CorrectAnswerRate()
+        UImistake.text = mistakeN.ToString();
+        //　正解率の計算
+        CorrectAnswerRate();
+        // 打つべき文字を赤く表示
+        if (!isRecMistype)
         {
-            //　正解率の計算
-            correctAR = 100f * correctN / (correctN + mistakeN);
-            //　小数点以下の桁を合わせる
-            UIcorrectAR.text = correctAR.ToString("0.00");
+            string s = UII.text.ToString();
+            string rest = s.Substring(1);
+            UII.text = "<color=#ff0000ff>" + s[0].ToString() + "</color>" + rest;
         }
+        isRecMistype = true;
+    }
+
+    //　正解率の計算処理
+    void CorrectAnswerRate()
+    {
+        //　正解率の計算
+        correctAR = 100f * correctN / (correctN + mistakeN);
+        //　小数点以下の桁を合わせる
+        UIcorrectAR.text = correctAR.ToString("0.00");
+    }
         
         /// 画面上に表示する打つ文字の表示を更新する
-        void UpdateSentence()
+    void UpdateSentence(string s)
+    {
+        ////打ち終わった文字は消す
+        string tmpTypingSentence = "";
+        for (int i = 0; i < Rpattern.Count; ++i)
         {
-            //打ち終わった文字は消す
-            string tmpTypingSentence = "";
-            for (int i = 0; i < Rpattern.Count; ++i)
+            if (i < index)
             {
-                if (i < index)
+                continue;
+            }
+            for (int j = 0; j < Rpattern[i].Count; ++j)
+            {
+                if (index == i && sentenceValid[index][j] == 0)
                 {
                     continue;
                 }
-                for (int j = 0; j < Rpattern[i].Count; ++j)
+                else if (index == i && sentenceValid[index][j] == 1)
                 {
-                    if (index == i && sentenceValid[index][j] == 0)
+                    for (int k = 0; k < Rpattern[index][j].Length; ++k)
                     {
-                        continue;
-                    }
-                    else if (index == i && sentenceValid[index][j] == 1)
-                    {
-                        for (int k = 0; k < Rpattern[index][j].Length; ++k)
+                        if (k >= sentenceIndex[index][j])
                         {
-                            if (k >= sentenceIndex[index][j])
-                            {
-                                tmpTypingSentence += Rpattern[index][j][k].ToString();
-                            }
+                            tmpTypingSentence += Rpattern[index][j][k].ToString();
                         }
-                        break;
                     }
-                    else if (index != i && sentenceValid[i][j] == 1)
-                    {
-                        tmpTypingSentence += Rpattern[i][j];
-                        break;
-                    }
+                    break;
+                }
+                else if (index != i && sentenceValid[i][j] == 1)
+                {
+                    tmpTypingSentence += Rpattern[i][j];
+                    break;
                 }
             }
-            UII.text = tmpTypingSentence;
-            
         }
-        void CompleteTask()
-        {
-            
-            Inqueue.Clear();
-            Timequeue.Clear();
-        }
+        UII.text = tmpTypingSentence;
+        //correctString += s;
+        //UII.text = correctString;
+
+    }
+    void CompleteTask()
+    {
+        
+        Inqueue.Clear();
+        Timequeue.Clear();
+        isInputValid = false;
+        OutputQ();
+    }
         //有効パターンのチェック
-        bool CheckValidSentence(string str)
+    bool CheckValidSentence(string str)
+    {
+        bool ret = false;
+        // 可能な入力パターンを残す
+        for (int i = 0; i < Rpattern[index].Count; ++i)
         {
-            bool ret = false;
-            // 可能な入力パターンを残す
-            for (int i = 0; i < Rpattern[index].Count; ++i)
+            // str と一致しないものを無効化処理
+            if (!str.Equals(Rpattern[index][i][sentenceIndex[index][i]].ToString()))
             {
-                // str と一致しないものを無効化処理
-                if (!str.Equals(Rpattern[index][i][sentenceIndex[index][i]].ToString()))
-                {
-                    sentenceValid[index][i] = 0;
-                }
-                // 次のキーへ
-                sentenceIndex[index][i] += indexAdd[index][i];
-                // 次の文字へ
-                if (sentenceIndex[index][i] >= Rpattern[index][i].Length)
-                {
-                    ret = true;
-                }
+                sentenceValid[index][i] = 0;
             }
-            return ret;
+            // 次のキーへ
+            sentenceIndex[index][i] += indexAdd[index][i];
+            // 次の文字へ
+            if (sentenceIndex[index][i] >= Rpattern[index][i].Length)
+            {
+                ret = true;
+            }
         }
+        return ret;
+    }
 
     // ゲームを終了する関数
     void Quit()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #elif UNITY_STANDALONE
+        UnityEngine.Application.Quit();
+    #endif
+    }
+    void OnGUI()
+    {
+        
+        Event e = Event.current;
+        if (isInputValid && e.type == EventType.KeyDown && e.type != EventType.KeyUp)
         {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #elif UNITY_STANDALONE
-            UnityEngine.Application.Quit();
-        #endif
-        }
-        //キーコードからcharへの変換
-        char ConvertKeyCodeToChar(KeyCode kc)
-        {
-            switch (kc)
+            Debug.Log(e.keyCode);
+            if (e.isKey)
             {
-                case KeyCode.A:
-                    return 'a';
-                case KeyCode.B:
-                    return 'b';
-                case KeyCode.C:
-                    return 'c';
-                case KeyCode.D:
-                    return 'd';
-                case KeyCode.E:
-                    return 'e';
-                case KeyCode.F:
-                    return 'f';
-                case KeyCode.G:
-                    return 'g';
-                case KeyCode.H:
-                    return 'h';
-                case KeyCode.I:
-                    return 'i';
-                case KeyCode.J:
-                    return 'j';
-                case KeyCode.K:
-                    return 'k';
-                case KeyCode.L:
-                    return 'l';
-                case KeyCode.M:
-                    return 'm';
-                case KeyCode.N:
-                    return 'n';
-                case KeyCode.O:
-                    return 'o';
-                case KeyCode.P:
-                    return 'p';
-                case KeyCode.Q:
-                    return 'q';
-                case KeyCode.R:
-                    return 'r';
-                case KeyCode.S:
-                    return 's';
-                case KeyCode.T:
-                    return 't';
-                case KeyCode.U:
-                    return 'u';
-                case KeyCode.V:
-                    return 'v';
-                case KeyCode.W:
-                    return 'w';
-                case KeyCode.X:
-                    return 'x';
-                case KeyCode.Y:
-                    return 'y';
-                case KeyCode.Z:
-                    return 'z';
-                case KeyCode.Minus:
-                    return '-';
-                case KeyCode.Alpha1:
-                    return '1';
-                case KeyCode.Alpha2:
-                    return '2';
-                case KeyCode.Alpha3:
-                    return '3';
-                case KeyCode.Alpha4:
-                    return '4';
-                case KeyCode.Alpha5:
-                    return '5';
-                case KeyCode.Alpha6:
-                    return '6';
-                case KeyCode.Alpha7:
-                    return '7';
-                case KeyCode.Alpha8:
-                    return '8';
-                case KeyCode.Alpha9:
-                    return '9';
-                case KeyCode.Alpha0:
-                    return '0';
-                default: // backslash
-                    return '\\';
+                var inputchar = ConvertKeyCodeToChar(e.keyCode);
+                Debug.Log(inputchar);
+                Inqueue.Enqueue(inputchar);
+                Timequeue.Enqueue(Time.realtimeSinceStartup);
             }
+            
+            
+        }
+    }
+    //キーコードからcharへの変換
+    char ConvertKeyCodeToChar(KeyCode kc)
+        {
+        switch (kc)
+        {
+            case KeyCode.A:
+                return 'a';
+            case KeyCode.B:
+                return 'b';
+            case KeyCode.C:
+                return 'c';
+            case KeyCode.D:
+                return 'd';
+            case KeyCode.E:
+                return 'e';
+            case KeyCode.F:
+                return 'f';
+            case KeyCode.G:
+                return 'g';
+            case KeyCode.H:
+                return 'h';
+            case KeyCode.I:
+                return 'i';
+            case KeyCode.J:
+                return 'j';
+            case KeyCode.K:
+                return 'k';
+            case KeyCode.L:
+                return 'l';
+            case KeyCode.M:
+                return 'm';
+            case KeyCode.N:
+                return 'n';
+            case KeyCode.O:
+                return 'o';
+            case KeyCode.P:
+                return 'p';
+            case KeyCode.Q:
+                return 'q';
+            case KeyCode.R:
+                return 'r';
+            case KeyCode.S:
+                return 's';
+            case KeyCode.T:
+                return 't';
+            case KeyCode.U:
+                return 'u';
+            case KeyCode.V:
+                return 'v';
+            case KeyCode.W:
+                return 'w';
+            case KeyCode.X:
+                return 'x';
+            case KeyCode.Y:
+                return 'y';
+            case KeyCode.Z:
+                return 'z';
+            case KeyCode.Minus:
+                return '-';
+            case KeyCode.Alpha1:
+                return '1';
+            case KeyCode.Alpha2:
+                return '2';
+            case KeyCode.Alpha3:
+                return '3';
+            case KeyCode.Alpha4:
+                return '4';
+            case KeyCode.Alpha5:
+                return '5';
+            case KeyCode.Alpha6:
+                return '6';
+            case KeyCode.Alpha7:
+                return '7';
+            case KeyCode.Alpha8:
+                return '8';
+            case KeyCode.Alpha9:
+                return '9';
+            case KeyCode.Alpha0:
+                return '0';
+            default:
+                return '\\';
+        }
         }
     }

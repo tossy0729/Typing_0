@@ -41,7 +41,7 @@ public class typingdata {
         List<string> hiraganasep = new List<string>();
         List<List<string>> Ro = new List<List<string>>();
 
-        int qnum = UnityEngine.Random.Range(0, JH.Count);
+        int qnum = UnityEngine.Random.Range(0, JH.Count-1);
         Ja = JH[qnum].J;
         Hi = JH[qnum].H;
         hiraganasep = R.ParseHiraganaSentence(Hi);
