@@ -229,8 +229,6 @@ public class typing : MonoBehaviour
         {
             index++;
         }
-        Debug.Log(index);
-        Debug.Log(Rpattern.Count);
         if (index >= Rpattern.Count)
         {
             CompleteTask();
@@ -352,8 +350,8 @@ public class typing : MonoBehaviour
         Event e = Event.current;
         if (isInputValid && e.type == EventType.KeyDown && e.type != EventType.KeyUp)
         {
-            Debug.Log(e.keyCode);
-            if (e.isKey)
+            Debug.Log(e);
+            if (e.character == '\0')
             {
                 var inputchar = ConvertKeyCodeToChar(e.keyCode);
                 Debug.Log(inputchar);
