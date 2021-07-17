@@ -14,6 +14,7 @@ public class typing : MonoBehaviour
     private Text UIH;
     //　入力した文字列テキスト
     private Text UII;
+
     //入力された文字のqueue
     private static Queue<char> Inqueue = new Queue<char>();
     //入力された時刻を入れるqueue
@@ -62,16 +63,6 @@ public class typing : MonoBehaviour
 
     void Start()
     {
-        //　テキストUIを取得
-        UIJ = transform.Find("InputPanel/QuestionJ").GetComponent<Text>();
-        UIR = transform.Find("InputPanel/QuestionR").GetComponent<Text>();
-        UII = transform.Find("InputPanel/Input").GetComponent<Text>();
-        UIH = transform.Find("InputPanel/Hiragana").GetComponent<Text>();
-        
-        UIcorrectA = transform.Find("DataPanel/Correct Answer").GetComponent<Text>();
-        UImistake = transform.Find("DataPanel/Mistake").GetComponent<Text>();
-        UIcorrectAR = transform.Find("DataPanel/Correct Answer Rate").GetComponent<Text>();
-
         //　データ初期化処理
         init();
 
@@ -79,6 +70,15 @@ public class typing : MonoBehaviour
     }
     void init()
     {
+        //　テキストUIを取得
+        UIJ = transform.Find("InputPanel/QuestionJ").GetComponent<Text>();
+        UIR = transform.Find("InputPanel/QuestionR").GetComponent<Text>();
+        UII = transform.Find("InputPanel/Input").GetComponent<Text>();
+        UIH = transform.Find("InputPanel/Hiragana").GetComponent<Text>();
+
+        UIcorrectA = transform.Find("DataPanel/Correct Answer").GetComponent<Text>();
+        UImistake = transform.Find("DataPanel/Mistake").GetComponent<Text>();
+        UIcorrectAR = transform.Find("DataPanel/Correct Answer Rate").GetComponent<Text>();
         correctN = 0;
         mistakeN = 0;
         correctAR = 0;
@@ -184,12 +184,17 @@ public class typing : MonoBehaviour
             //ミスかどうかを調べる
             bool isMiss = true;
 
+            //今見ているひらがな1文字についてのパターンを調べる
             for (int i = 0; i < Rpattern[index].Count; i++)
             {
                 //invalidならパス
-                if (sentenceValid[index][i] == 0) continue;
+                if (sentenceValid[index][i] == 0)
+                {
+                    continue;
+                }
                 int j = sentenceIndex[index][i];
                 char nextinchar = Rpattern[index][i][j];
+                Debug.Log(Rpattern[index][i]);
                 //正解タイプ
                 if (inchar == nextinchar)
                 {
@@ -200,7 +205,11 @@ public class typing : MonoBehaviour
 
             }
             if (!isMiss) Correct(inchar.ToString());
-            else Mistake();
+            else
+            {
+                
+                Mistake();
+            }
 
         }
     }
@@ -248,9 +257,11 @@ public class typing : MonoBehaviour
         // 打つべき文字を赤く表示
         if (!isRecMistype)
         {
-            string s = UII.text.ToString();
+            string cor = "<color=#00bfff>" + correctString + "</color>";
+            string s = UII.text.ToString().Replace(cor,"");
             string rest = s.Substring(1);
-            UII.text = "<color=#ff0000ff>" + s[0].ToString() + "</color>" + rest;
+            string red = "<color=#ff0000>" + s[0].ToString() + "</color>";
+            UII.text = cor + red + rest;
         }
         isRecMistype = true;
     }
@@ -299,9 +310,12 @@ public class typing : MonoBehaviour
                 }
             }
         }
-        UII.text = tmpTypingSentence;
-        //correctString += s;
-        //UII.text = correctString;
+        //UII.text = tmpTypingSentence;
+        if (!isRecMistype)
+        {
+            correctString += s;
+            UII.text = "<color=#00bfff>" + correctString + "</color>" + tmpTypingSentence;
+        }
 
     }
     void CompleteTask()
@@ -350,11 +364,11 @@ public class typing : MonoBehaviour
         Event e = Event.current;
         if (isInputValid && e.type == EventType.KeyDown && e.type != EventType.KeyUp)
         {
-            Debug.Log(e);
+            //Debug.Log(e);
             if (e.character == '\0')
             {
                 var inputchar = ConvertKeyCodeToChar(e.keyCode);
-                Debug.Log(inputchar);
+                //Debug.Log(inputchar);
                 Inqueue.Enqueue(inputchar);
                 Timequeue.Enqueue(Time.realtimeSinceStartup);
             }

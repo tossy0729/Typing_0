@@ -92,6 +92,7 @@ public class makeR
                     tmpList.Add(t);
                 }
 
+
             }
             // 「っ」の処理
             else if (one.Equals("っ"))
@@ -190,7 +191,7 @@ public class makeR
         {"ろ", new string[1] {"ro"}},
         {"わ", new string[1] {"wa"}},
         {"を", new string[1] {"wo"}},
-        {"ん", new string[3] {"nn", "xn", "n"}}, //のちのち例外処理
+        {"ん", new string[3] {"nn", "xn","n"}}, //のちのち例外処理
         {"が", new string[1] {"ga"}},
         {"ぎ", new string[1] {"gi"}},
         {"ぐ", new string[1] {"gu"}},
