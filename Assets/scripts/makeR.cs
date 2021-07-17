@@ -129,9 +129,12 @@ public class makeR
                 }
                 tmpList = tmpList.Concat(retList).ToList();
             }
-
             //‚»‚êˆÈŠO
-            else { tmpList = HR[one].ToList(); }
+            
+            else {
+                try { tmpList = HR[one].ToList(); }
+                catch { UnityEngine.Debug.Log(one); }
+            }
             pattern.Add(tmpList);
         }
 
@@ -198,6 +201,11 @@ public class makeR
         {"‚¸", new string[1] {"zu"}},
         {"‚º", new string[1] {"ze"}},
         {"‚¼", new string[1] {"zo"}},
+        {"‚¾", new string[1] {"da"}},
+        {"‚À", new string[1] {"di"}},
+        {"‚Ã", new string[1] {"du"}},
+        {"‚Å", new string[1] {"de"}},
+        {"‚Ç", new string[1] {"do"}},
         {"‚Î", new string[1] {"ba"}},
         {"‚Ñ", new string[1] {"bi"}},
         {"‚Ô", new string[1] {"bu"}},
