@@ -10,7 +10,6 @@ public class typing : MonoBehaviour
     public typingdata td = new typingdata();
     //　表示テキスト
     private Text UIJ;
-    private Text UIR;
     private Text UIH;
     //　入力した文字列テキスト
     private Text UII;
@@ -72,7 +71,6 @@ public class typing : MonoBehaviour
     {
         //　テキストUIを取得
         UIJ = transform.Find("InputPanel/QuestionJ").GetComponent<Text>();
-        UIR = transform.Find("InputPanel/QuestionR").GetComponent<Text>();
         UII = transform.Find("InputPanel/Input").GetComponent<Text>();
         UIH = transform.Find("InputPanel/Hiragana").GetComponent<Text>();
 
@@ -82,9 +80,9 @@ public class typing : MonoBehaviour
         correctN = 0;
         mistakeN = 0;
         correctAR = 0;
-        UIcorrectA.text = correctN.ToString();
-        UImistake.text = mistakeN.ToString();
-        UIcorrectAR.text = correctAR.ToString();
+        UIcorrectA.text = "correct number:" + correctN.ToString();
+        UImistake.text = "miss:" + mistakeN.ToString();
+        UIcorrectAR.text = "correct rate:" + correctAR.ToString();
         JudgeTime = -1.0;
         isRecMistype = false;
         isInputValid = true;
@@ -110,7 +108,6 @@ public class typing : MonoBehaviour
     {
         //　テキストUIを初期化する
         UIJ.text = "";
-        UIR.text = "";
         UIH.text = "";
         index = 0;
         sentenceLength = 0;
@@ -132,9 +129,8 @@ public class typing : MonoBehaviour
         {
             nQR = String.Concat(nQR,Rpattern[i][0]);
         }
-        UIJ.text = nQJ;
-        UIR.text = nQR;
-        UIH.text = nQH;
+        UIJ.text = "<color=#000000>" + nQJ + "</color>";
+        UIH.text = "<color=#808080>" + nQH + "</color>" ;
         UII.text = nQR;
         isInputValid = true;
     }
@@ -194,7 +190,6 @@ public class typing : MonoBehaviour
                 }
                 int j = sentenceIndex[index][i];
                 char nextinchar = Rpattern[index][i][j];
-                Debug.Log(Rpattern[index][i]);
                 //正解タイプ
                 if (inchar == nextinchar)
                 {
@@ -225,7 +220,7 @@ public class typing : MonoBehaviour
         //　正解数を増やす
         correctN++;
         sentenceLength++;
-        UIcorrectA.text = correctN.ToString();
+        UIcorrectA.text = "correct number:" + correctN.ToString();
         //　正解率の計算
         CorrectAnswerRate();
         //　次の文字を指す
@@ -251,7 +246,7 @@ public class typing : MonoBehaviour
         //　失敗数を増やす（同時押しにも対応させる）
         mistakeN++;
 
-        UImistake.text = mistakeN.ToString();
+        UImistake.text = "miss:" + mistakeN.ToString();
         //　正解率の計算
         CorrectAnswerRate();
         // 打つべき文字を赤く表示
@@ -272,7 +267,7 @@ public class typing : MonoBehaviour
         //　正解率の計算
         correctAR = 100f * correctN / (correctN + mistakeN);
         //　小数点以下の桁を合わせる
-        UIcorrectAR.text = correctAR.ToString("0.00");
+        UIcorrectAR.text = "correct rate:" + correctAR.ToString("0.00");
     }
         
         /// 画面上に表示する打つ文字の表示を更新する
@@ -364,11 +359,9 @@ public class typing : MonoBehaviour
         Event e = Event.current;
         if (isInputValid && e.type == EventType.KeyDown && e.type != EventType.KeyUp)
         {
-            //Debug.Log(e);
             if (e.character == '\0')
             {
                 var inputchar = ConvertKeyCodeToChar(e.keyCode);
-                //Debug.Log(inputchar);
                 Inqueue.Enqueue(inputchar);
                 Timequeue.Enqueue(Time.realtimeSinceStartup);
             }
