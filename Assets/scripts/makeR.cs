@@ -999,6 +999,23 @@ public class makeR
                                                         "lturilyo", "xturilyo", "ltsurilyo", "xtsurilyo",
                                                         "lturixyo", "xturixyo", "ltsurixyo", "xtsurixyo"}},
 
+        //ÇªÇÃëº
+        {" ", new string[1] {" "}},
+        {"-", new string[1] {"-"}},
+        {"Å[", new string[1] {"-"}},
+        {",", new string[1] {","}},
+        {".", new string[1] {"."}},
+        {";", new string[1] {";"}},
+        {":", new string[1] {":"}},
+        {"[", new string[1] {"["}},
+        {"]", new string[1] {"]"}},
+        {"@", new string[1] {"@"}},
+        {"/", new string[1] {"/"}},
+        {"!", new string[1] {"!"}},
+        {"ÅI", new string[1] {"!"}},
+        {"?", new string[1] {"?"}},
+        {"ÅH", new string[1] {"?"}}
+
 
     };
 }
