@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class startdis : MonoBehaviour
+public class Buttons : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,10 +14,13 @@ public class startdis : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SceneManager.LoadScene("mode_select");
-        }
+        
+    }
+
+    public void ToMain()
+    {
+        //–³ŒÀ‚ÖˆÚ“®
+        SceneManager.LoadScene("main");
     }
     void Quit()
     {
