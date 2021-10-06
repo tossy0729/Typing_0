@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class typing : MonoBehaviour
 { 
@@ -352,6 +353,11 @@ public class typing : MonoBehaviour
     #elif UNITY_STANDALONE
         UnityEngine.Application.Quit();
     #endif
+    }
+    public void ToMenu()
+    {
+        //モードセレクトへ移動
+        SceneManager.LoadScene("mode_select");
     }
     void OnGUI()
     {

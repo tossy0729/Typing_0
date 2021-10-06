@@ -22,6 +22,11 @@ public class Buttons : MonoBehaviour
         //無限へ移動
         SceneManager.LoadScene("main");
     }
+    public void ToMenu()
+    {
+        //モードセレクトへ移動
+        SceneManager.LoadScene("mode_select");
+    }
     void Quit()
     {
 #if UNITY_EDITOR
