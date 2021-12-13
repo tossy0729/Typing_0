@@ -354,11 +354,7 @@ public class typing : MonoBehaviour
         UnityEngine.Application.Quit();
     #endif
     }
-    public void ToMenu()
-    {
-        //モードセレクトへ移動
-        SceneManager.LoadScene("mode_select");
-    }
+    
     void OnGUI()
     {
         
